@@ -20,5 +20,6 @@ public class MyBatisTest {
         System.out.println(geoTableMapper.findAllGeoTable());
         System.out.println(userMapper.findAllUser());
         System.out.println(dataGroupMapper.findAllDataGroupStringField());
+        System.out.println(dataGroupMapper.findAllDataGroupNumberField());
     }
 }
