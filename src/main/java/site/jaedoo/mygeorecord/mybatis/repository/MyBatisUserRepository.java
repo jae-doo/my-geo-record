@@ -9,7 +9,7 @@ import site.jaedoo.mygeorecord.mybatis.mapper.UserMapper;
 
 import java.util.List;
 
-@Repository
+@Repository("userRepository")
 @RequiredArgsConstructor
 public class MyBatisUserRepository implements UserRepository {
     private final UserMapper userMapper;
