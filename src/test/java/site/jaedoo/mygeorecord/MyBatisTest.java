@@ -1,9 +1,11 @@
 package site.jaedoo.mygeorecord;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import site.jaedoo.mygeorecord.mybatis.mapper.ColumnMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.UserMapper;
@@ -13,13 +15,15 @@ public class MyBatisTest {
     @Autowired GeoTableMapper geoTableMapper;
     @Autowired UserMapper userMapper;
     @Autowired DataGroupMapper dataGroupMapper;
+    @Autowired ColumnMapper columnMapper;
 
     @Test
     @DisplayName("Mapper가 제대로 동작하는지 확인")
     void getResource() {
-        System.out.println(geoTableMapper.findAllGeoTable());
-        System.out.println(userMapper.findAllUser());
-        System.out.println(dataGroupMapper.findAllDataGroupStringField());
-        System.out.println(dataGroupMapper.findAllDataGroupNumberField());
+        Assertions.assertThat(geoTableMapper.findAllGeoTable()).isNotEmpty();
+        Assertions.assertThat(userMapper.findAllUser()).isNotEmpty();
+        Assertions.assertThat(dataGroupMapper.findAllDataGroupStringField()).isNotEmpty();
+        Assertions.assertThat(dataGroupMapper.findAllDataGroupNumberField()).isNotEmpty();
+        Assertions.assertThat(columnMapper.findAllColumn()).isNotEmpty();
     }
 }
