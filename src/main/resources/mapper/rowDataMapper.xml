@@ -3,6 +3,7 @@
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.RowDataMapper">
     <select id="findAllStringRowData" resultType="RowData">
         select
+            sr.id               row_id,
             sr.latitude         latitude,
             sr.longitude        longitude,
             ssf.data            data,
@@ -14,6 +15,7 @@
     </select>
     <select id="findAllNumberRowData" resultType="RowData">
         select
+            sr.id               row_id,
             sr.latitude         latitude,
             sr.longitude        longitude,
             snf.data            data,
