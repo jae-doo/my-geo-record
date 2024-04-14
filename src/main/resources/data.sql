@@ -29,7 +29,7 @@ values
     ('dot');
 
 insert into DATA_TYPE (TYPE)
-values ('number'), ('string'), ('url');
+values ('NUMBER'), ('STRING'), ('URL');
 
 insert into DATA_GROUP (name, map_id)
 values

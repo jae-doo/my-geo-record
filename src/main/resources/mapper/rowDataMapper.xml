@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.RowDataMapper">
+    <select id="findAllStringRowData" resultType="RowData">
+        select
+            sr.id               row_id,
+            sr.latitude         latitude,
+            sr.longitude        longitude,
+            ssf.data            data,
+            dgf.name            field_name
+        from spatial_record sr, spatial_string_field ssf, data_group_field dgf
+        where ssf.spatial_record_id = sr.id and
+              ssf.data_group_field_id = dgf.id
+        order by sr.id;
+    </select>
+    <select id="findAllNumberRowData" resultType="RowData">
+        select
+            sr.id               row_id,
+            sr.latitude         latitude,
+            sr.longitude        longitude,
+            snf.data            data,
+            dgf.name            field_name
+        from spatial_record sr, spatial_number_field snf, data_group_field dgf
+        where snf.spatial_record_id = sr.id and
+              snf.data_group_field_id = dgf.id
+        order by sr.id;
+    </select>
+</mapper>

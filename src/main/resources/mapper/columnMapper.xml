@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.ColumnMapper">
+    <select id="findAllColumn" resultType="Column">
+        select
+            dgf.name    name,
+            dt.type     type
+        from data_type dt, data_group_field dgf
+        where dgf.data_type_id = dt.id;
+    </select>
+</mapper>
