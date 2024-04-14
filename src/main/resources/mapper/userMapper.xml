@@ -5,4 +5,10 @@
         select *
         from users;
     </select>
+
+    <select id="findUserByEmail" resultType="User">
+        select *
+        from users
+        where EMAIL=#{email};
+    </select>
 </mapper>
