@@ -24,4 +24,10 @@ public class MyBatisUserRepository implements UserRepository {
     public Optional<User> findUserByEmail(String email) {
         return userMapper.findUserByEmail(email);
     }
+
+    @Override
+    public Optional<User> createUser(String email, String password) {
+        userMapper.insertUser(email,password);
+        return userMapper.findUserByEmail(email);
+    }
 }

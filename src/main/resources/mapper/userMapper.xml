@@ -11,4 +11,9 @@
         from users
         where EMAIL=#{email};
     </select>
+
+    <insert id="insertUser">
+        insert into users(email, password)
+        values (#{email}, #{password});
+    </insert>
 </mapper>

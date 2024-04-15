@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import site.jaedoo.mygeorecord.domain.entity.User;
-import site.jaedoo.mygeorecord.domain.service.LoginService;
+import site.jaedoo.mygeorecord.service.user.LoginService;
+import site.jaedoo.mygeorecord.service.user.exception.LoginException;
 import site.jaedoo.mygeorecord.web.dto.LoginForm;
 import site.jaedoo.mygeorecord.web.dto.LoginResponse;
 
@@ -25,13 +26,8 @@ public class LoginController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginForm loginForm, HttpSession session) {
         Optional<User> optionalUser = loginService.login(loginForm.getEmail(), loginForm.getPassword());
 
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(new LoginResponse(false));
-        }
-
-        session.setAttribute("id", optionalUser.get().getId());
-        return ResponseEntity.ok(new LoginResponse(true));
+        return optionalUser.map(LoginResponse::new)
+                .map(ResponseEntity::ok)
+                .orElseThrow(LoginException::new);
     }
 }

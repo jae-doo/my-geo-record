@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface UserMapper {
     List<User> findAllUser();
     Optional<User> findUserByEmail(@Param("email") String email);
+    int insertUser(@Param("email") String email, @Param("password") String password);
 }
