@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface GeoTableService {
     List<GeoTable> findUserMaps(Long userId);
+    GeoTable registerGeoTable(Long userId, String name);
 }

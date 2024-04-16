@@ -22,4 +22,9 @@ public class MyBatisGeoTableRepository implements GeoTableRepository {
     public List<GeoTable> findByUserId(Long id) {
         return geoTableMapper.findGeoTableByUserId(id);
     }
+
+    @Override
+    public int countUserGeoTable(Long id) {
+        return geoTableMapper.countUserGeoTable(id);
+    }
 }
