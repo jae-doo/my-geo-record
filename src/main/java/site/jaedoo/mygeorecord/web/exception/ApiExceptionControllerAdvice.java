@@ -5,8 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import site.jaedoo.mygeorecord.service.user.exception.DuplicateUserException;
-import site.jaedoo.mygeorecord.service.user.exception.LoginException;
+import site.jaedoo.mygeorecord.web.exception.user.UserAuthenticationException;
+import site.jaedoo.mygeorecord.web.exception.user.DuplicateUserException;
+import site.jaedoo.mygeorecord.web.exception.user.LoginException;
 import site.jaedoo.mygeorecord.web.exception.dto.ErrorCode;
 import site.jaedoo.mygeorecord.web.exception.dto.ErrorResult;
 

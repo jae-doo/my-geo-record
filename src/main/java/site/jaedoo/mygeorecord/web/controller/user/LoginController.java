@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.controller;
+package site.jaedoo.mygeorecord.web.controller.user;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import site.jaedoo.mygeorecord.constant.SessionConst;
+import site.jaedoo.mygeorecord.web.constant.SessionConst;
 import site.jaedoo.mygeorecord.domain.entity.User;
-import site.jaedoo.mygeorecord.service.user.LoginService;
-import site.jaedoo.mygeorecord.service.user.exception.LoginException;
-import site.jaedoo.mygeorecord.web.dto.LoginForm;
-import site.jaedoo.mygeorecord.web.dto.LoginResponse;
+import site.jaedoo.mygeorecord.domain.service.LoginService;
+import site.jaedoo.mygeorecord.web.exception.user.LoginException;
+import site.jaedoo.mygeorecord.web.controller.user.dto.LoginForm;
+import site.jaedoo.mygeorecord.web.controller.user.dto.LoginResponse;
 
 import java.util.Optional;
 

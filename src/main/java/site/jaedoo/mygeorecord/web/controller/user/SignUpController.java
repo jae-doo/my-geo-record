@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.controller;
+package site.jaedoo.mygeorecord.web.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.jaedoo.mygeorecord.domain.entity.User;
-import site.jaedoo.mygeorecord.service.user.SignUpService;
-import site.jaedoo.mygeorecord.service.user.exception.DuplicateUserException;
-import site.jaedoo.mygeorecord.web.dto.SignUpForm;
-import site.jaedoo.mygeorecord.web.dto.SignUpResponse;
+import site.jaedoo.mygeorecord.domain.service.SignUpService;
+import site.jaedoo.mygeorecord.web.exception.user.DuplicateUserException;
+import site.jaedoo.mygeorecord.web.controller.user.dto.SignUpForm;
+import site.jaedoo.mygeorecord.web.controller.user.dto.SignUpResponse;
 
 import java.util.Optional;
 
