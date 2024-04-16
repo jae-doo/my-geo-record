@@ -8,4 +8,5 @@ import java.util.List;
 @Mapper
 public interface GeoTableMapper {
     List<GeoTable> findAllGeoTable();
+    List<GeoTable> findGeoTableByUserId(Long id);
 }

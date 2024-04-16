@@ -5,4 +5,9 @@
         select id, name
         from MAP;
     </select>
+    <select id="findGeoTableByUserId" resultType="GeoTable">
+        select id, name
+        from MAP
+        where owner=#{id};
+    </select>
 </mapper>

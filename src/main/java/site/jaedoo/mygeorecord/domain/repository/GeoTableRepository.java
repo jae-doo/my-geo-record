@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface GeoTableRepository {
     List<GeoTable> findAllGeoTable();
+    List<GeoTable> findByUserId(Long id);
 }
