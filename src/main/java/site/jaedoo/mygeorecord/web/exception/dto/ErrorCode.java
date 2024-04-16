@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.controller.exception.dto;
+package site.jaedoo.mygeorecord.web.exception.dto;
 
 /**
  * API 에러 코드를 정의합니다.
@@ -6,7 +6,8 @@ package site.jaedoo.mygeorecord.web.controller.exception.dto;
 public enum ErrorCode {
     USER_NOT_FOUND(101),
     USER_DUPLICATED(102),
-    LOGIN_FAIL(103);
+    LOGIN_FAIL(103),
+    USER_NOT_AUTHORIZED(104);
 
     private final int code;
 

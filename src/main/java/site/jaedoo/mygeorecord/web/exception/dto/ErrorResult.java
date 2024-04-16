@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.controller.exception.dto;
+package site.jaedoo.mygeorecord.web.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

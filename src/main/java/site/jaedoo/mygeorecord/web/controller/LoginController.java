@@ -3,11 +3,11 @@ package site.jaedoo.mygeorecord.web.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import site.jaedoo.mygeorecord.constant.SessionConst;
 import site.jaedoo.mygeorecord.domain.entity.User;
 import site.jaedoo.mygeorecord.service.user.LoginService;
 import site.jaedoo.mygeorecord.service.user.exception.LoginException;
@@ -25,6 +25,8 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginForm loginForm, HttpSession session) {
         Optional<User> optionalUser = loginService.login(loginForm.getEmail(), loginForm.getPassword());
+
+        optionalUser.ifPresent(user -> session.setAttribute(SessionConst.USER, user.getId()));
 
         return optionalUser.map(LoginResponse::new)
                 .map(ResponseEntity::ok)
