@@ -5,4 +5,15 @@
         select *
         from users;
     </select>
+
+    <select id="findUserByEmail" resultType="User">
+        select *
+        from users
+        where EMAIL=#{email};
+    </select>
+
+    <insert id="insertUser">
+        insert into users(email, password)
+        values (#{email}, #{password});
+    </insert>
 </mapper>
