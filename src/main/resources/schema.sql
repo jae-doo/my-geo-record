@@ -18,7 +18,8 @@ create table users (
 create table map (
                      id long primary key auto_increment,
                      name varchar(255) not null,
-                     owner long not null references users(id)
+                     owner long not null references users(id),
+                     unique (name, owner)
 );
 
 -- 데이터 그룹 테이블

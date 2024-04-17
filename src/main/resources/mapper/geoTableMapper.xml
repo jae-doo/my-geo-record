@@ -8,12 +8,17 @@
     <select id="findGeoTableByUserId" resultType="GeoTable">
         select id, name
         from MAP
-        where owner=#{id};
+        where owner=#{userId};
     </select>
     <select id="countUserGeoTable" resultType="java.lang.Integer">
         select count(owner)
         from MAP
-        where owner=#{id};
+        where owner=#{userId};
+    </select>
+    <select id="findGeoTableByUserIdAndName" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
+        select id, name
+        from MAP
+        where owner=#{userId} and name=#{name};
     </select>
     <insert id="insertGeoTable">
         insert into MAP(name, owner)

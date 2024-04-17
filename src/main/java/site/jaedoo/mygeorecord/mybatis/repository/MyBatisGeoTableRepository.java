@@ -20,18 +20,24 @@ public class MyBatisGeoTableRepository implements GeoTableRepository {
     }
 
     @Override
-    public List<GeoTable> findByUserId(Long id) {
-        return geoTableMapper.findGeoTableByUserId(id);
+    public List<GeoTable> findByUserId(Long userId) {
+        return geoTableMapper.findGeoTableByUserId(userId);
     }
 
     @Override
-    public int countUserGeoTable(Long id) {
-        return geoTableMapper.countUserGeoTable(id);
+    public int countUserGeoTable(Long userId) {
+        return geoTableMapper.countUserGeoTable(userId);
     }
 
     @Override
-    public GeoTable insertGeoTable(Long id, String name) {
-        geoTableMapper.insertGeoTable(id, name);
-        return geoTableMapper
+    public boolean checkGeoTableName(Long userId, String name) {
+        return geoTableMapper.findGeoTableByUserIdAndName(userId, name).isPresent();
+    }
+
+    @Override
+    public Optional<GeoTable> insertGeoTable(Long userId, String name) {
+        if (checkGeoTableName(userId, name)) return Optional.empty();
+        geoTableMapper.insertGeoTable(userId, name);
+        return geoTableMapper.findGeoTableByUserIdAndName(userId, name);
     }
 }

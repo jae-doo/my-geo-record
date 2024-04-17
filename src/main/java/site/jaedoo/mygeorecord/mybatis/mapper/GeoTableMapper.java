@@ -10,9 +10,11 @@ import java.util.Optional;
 public interface GeoTableMapper {
     List<GeoTable> findAllGeoTable();
 
-    List<GeoTable> findGeoTableByUserId(Long id);
+    List<GeoTable> findGeoTableByUserId(Long userId);
 
-    int countUserGeoTable(Long id);
+    int countUserGeoTable(Long userId);
 
     int insertGeoTable(Long userId, String name);
+
+    Optional<GeoTable> findGeoTableByUserIdAndName(Long userId, String name);
 }

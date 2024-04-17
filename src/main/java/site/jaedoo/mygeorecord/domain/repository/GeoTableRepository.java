@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface GeoTableRepository {
     List<GeoTable> findAllGeoTable();
-    List<GeoTable> findByUserId(Long id);
-    int countUserGeoTable(Long id);
-    GeoTable insertGeoTable(Long id, String name);
+    List<GeoTable> findByUserId(Long userId);
+    int countUserGeoTable(Long userId);
+    boolean checkGeoTableName(Long userId, String name);
+    Optional<GeoTable> insertGeoTable(Long userId, String name);
 }
