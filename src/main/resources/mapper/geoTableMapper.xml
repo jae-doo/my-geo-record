@@ -15,4 +15,8 @@
         from MAP
         where owner=#{id};
     </select>
+    <insert id="insertGeoTable">
+        insert into MAP(name, owner)
+        values (#{name}, #{userId})
+    </insert>
 </mapper>

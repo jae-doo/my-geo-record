@@ -20,7 +20,7 @@ import java.util.Optional;
 public class SignUpController {
     private final SignUpService signUpService;
 
-    @GetMapping
+    @GetMapping("/check")
     public ResponseEntity<?> checkEmail(@RequestParam String email) {
         boolean duplicated = signUpService.checkAlreadyExist(email);
         if (duplicated) throw new DuplicateUserException();

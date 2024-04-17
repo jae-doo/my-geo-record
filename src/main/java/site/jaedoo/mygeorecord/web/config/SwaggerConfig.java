@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.util.swagger;
+package site.jaedoo.mygeorecord.web.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

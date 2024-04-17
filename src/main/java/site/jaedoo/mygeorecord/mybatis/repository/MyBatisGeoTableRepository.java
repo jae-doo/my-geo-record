@@ -7,6 +7,7 @@ import site.jaedoo.mygeorecord.domain.repository.GeoTableRepository;
 import site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository("geoTableRepository")
@@ -26,5 +27,11 @@ public class MyBatisGeoTableRepository implements GeoTableRepository {
     @Override
     public int countUserGeoTable(Long id) {
         return geoTableMapper.countUserGeoTable(id);
+    }
+
+    @Override
+    public GeoTable insertGeoTable(Long id, String name) {
+        geoTableMapper.insertGeoTable(id, name);
+        return geoTableMapper
     }
 }
