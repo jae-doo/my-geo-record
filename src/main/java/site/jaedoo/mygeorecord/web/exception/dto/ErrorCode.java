@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
     USER_NOT_FOUND(101), USER_DUPLICATED(102), LOGIN_FAIL(103), USER_NOT_AUTHORIZED(104),
-    MAP_LIMIT_EXCEEDED(201);
+    MAP_NOT_FOUND(201), MAP_LIMIT_EXCEEDED(202);
 
     private final int code;
 }

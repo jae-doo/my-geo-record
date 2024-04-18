@@ -29,6 +29,12 @@
         where owner=#{userId} and name=#{name};
     </select>
 
+    <select id="findById" resultType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails">
+        select id, name
+        from MAP
+        where id=#{id};
+    </select>
+
     <!--  GeoTable을 추가합니다.  -->
     <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails"
             useGeneratedKeys="true" keyProperty="id">
@@ -37,7 +43,11 @@
     </insert>
 
     <!-- GeoTable의 이름을 변경합니다. -->
-    <update id="updateGeoTableName"></update>
+    <update id="updateGeoTableName" >
+        update MAP
+        set name=#{name}
+        where id=#{id};
+    </update>
 
     <!--  GeoTable을 id를 이용해 삭제합니다.  -->
     <delete id="deleteGeoTableById">

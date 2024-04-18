@@ -15,5 +15,11 @@ public interface GeoTableMapper {
 
     int countUserGeoTable(Long userId);
 
+    Optional<GeoTable> findById(Long id);
+
     int insertGeoTable(GeoTableDetails geoTableDetails);
+
+    int updateGeoTableName(Long id, String name);
+
+    int deleteGeoTableById(Long id);
 }

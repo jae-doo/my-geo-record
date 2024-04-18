@@ -31,9 +31,25 @@ public class MyBatisGeoTableRepository implements GeoTableRepository {
     }
 
     @Override
+    public Optional<GeoTable> findById(Long id) { return geoTableMapper.findById(id); }
+
+    @Override
     public GeoTable insertGeoTable(Long userId, String name) {
         GeoTableDetails geoTableDetails = new GeoTableDetails(userId, name);
         geoTableMapper.insertGeoTable(geoTableDetails);
         return new GeoTable(geoTableDetails.getId(), geoTableDetails.getName());
+    }
+
+    @Override
+    public Optional<GeoTable> updateGeoTableName(Long id, String name) {
+        int modified = geoTableMapper.updateGeoTableName(id, name);
+
+        if (modified == 0) return Optional.empty();
+        else return Optional.of(new GeoTable(id, name));
+    }
+
+    @Override
+    public int deleteGeoTableById(Long id) {
+        return geoTableMapper.deleteGeoTableById(id);
     }
 }
