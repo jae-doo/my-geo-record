@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.repository.GeoTableRepository;
 import site.jaedoo.mygeorecord.domain.service.GeoTableService;
-import site.jaedoo.mygeorecord.web.exception.geotable.GeoTableAlreadyExistsException;
 import site.jaedoo.mygeorecord.web.exception.geotable.GeoTableLimitExceededException;
 
 import java.util.List;
@@ -33,15 +32,12 @@ public class DefaultGeoTableService implements GeoTableService {
      * @param geoTableName 등록하려는 GeoTable 이름
      * @return 등록에 성공한 GeoTable 리턴
      * @throws GeoTableLimitExceededException 사용자의 지도 수가 {@link DefaultGeoTableService#MAX_GEO_TABLE} 이상이면 예외를 던집니다.
-     * @throws GeoTableAlreadyExistsException 사용자가 등록하려는 지도 이름이 이미 등록되어 있을 때 예외를 던집니다.
      */
     @Override
     public GeoTable registerGeoTable(Long userId, String geoTableName) {
         int numberOfGeoTable = geoTableRepository.countUserGeoTable(userId);
         if (numberOfGeoTable >= MAX_GEO_TABLE) throw new GeoTableLimitExceededException(MAX_GEO_TABLE);
 
-        Optional<GeoTable> optionalGeoTable = geoTableRepository.insertGeoTable(userId, geoTableName);
-
-        return optionalGeoTable.orElseThrow(GeoTableAlreadyExistsException::new);
+        return geoTableRepository.insertGeoTable(userId, geoTableName);
     }
 }

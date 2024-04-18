@@ -8,12 +8,11 @@ delete from DATA_GROUP;
 delete from MAP;
 delete from USERS;
 
-show tables;
-
 insert into users(email, password)
 values
     ('user1', '1111'), ('user2', '2222'), ('user3', '3333'),
-    ('user4', '4444'), ('user5', '5555'), ('user6', '6666');
+    ('user4', '4444'), ('user5', '5555'), ('user6', '6666'),
+    ('string', 'string');
 
 insert into map(name, owner)
 values

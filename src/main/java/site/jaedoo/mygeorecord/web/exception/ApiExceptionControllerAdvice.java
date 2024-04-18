@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import site.jaedoo.mygeorecord.web.exception.geotable.GeoTableLimitExceededException;
 import site.jaedoo.mygeorecord.web.exception.user.UserAuthenticationException;
 import site.jaedoo.mygeorecord.web.exception.user.DuplicateUserException;
 import site.jaedoo.mygeorecord.web.exception.user.LoginException;
@@ -33,5 +34,12 @@ public class ApiExceptionControllerAdvice {
     public ErrorResult handleUserAuthEx(UserAuthenticationException ex) {
         log.error("[exception handle]", ex);
         return new ErrorResult(ErrorCode.USER_NOT_AUTHORIZED, ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GeoTableLimitExceededException.class)
+    public ErrorResult handleGeoTableLimitExceedEx(Exception ex) {
+        log.error("[exception handle]", ex);
+        return new ErrorResult(ErrorCode.MAP_LIMIT_EXCEEDED, ex.getMessage());
     }
 }

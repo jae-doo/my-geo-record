@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.repository.GeoTableRepository;
+import site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails;
 import site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper;
 
 import java.util.List;
@@ -30,14 +31,9 @@ public class MyBatisGeoTableRepository implements GeoTableRepository {
     }
 
     @Override
-    public boolean checkGeoTableName(Long userId, String name) {
-        return geoTableMapper.findGeoTableByUserIdAndName(userId, name).isPresent();
-    }
-
-    @Override
-    public Optional<GeoTable> insertGeoTable(Long userId, String name) {
-        if (checkGeoTableName(userId, name)) return Optional.empty();
-        geoTableMapper.insertGeoTable(userId, name);
-        return geoTableMapper.findGeoTableByUserIdAndName(userId, name);
+    public GeoTable insertGeoTable(Long userId, String name) {
+        GeoTableDetails geoTableDetails = new GeoTableDetails(userId, name);
+        geoTableMapper.insertGeoTable(geoTableDetails);
+        return new GeoTable(geoTableDetails.getId(), geoTableDetails.getName());
     }
 }
