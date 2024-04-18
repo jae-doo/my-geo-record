@@ -12,7 +12,8 @@
         where EMAIL=#{email};
     </select>
 
-    <insert id="insertUser">
+    <insert id="insertUser" parameterType="site.jaedoo.mygeorecord.mybatis.dto.UserDetails"
+            useGeneratedKeys="true" keyProperty="id">
         insert into users(email, password)
         values (#{email}, #{password});
     </insert>

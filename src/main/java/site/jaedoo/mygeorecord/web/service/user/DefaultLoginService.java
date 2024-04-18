@@ -1,18 +1,19 @@
-package site.jaedoo.mygeorecord.service.user;
+package site.jaedoo.mygeorecord.web.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import site.jaedoo.mygeorecord.domain.entity.User;
 import site.jaedoo.mygeorecord.domain.repository.UserRepository;
+import site.jaedoo.mygeorecord.domain.service.LoginService;
 
 import java.util.Optional;
 
 /**
  * 사용자의 로그인을 처리합니다.
  */
-@Service
+@Service("loginService")
 @RequiredArgsConstructor
-public class LoginService {
+public class DefaultLoginService implements LoginService {
     private final UserRepository userRepository;
 
     /**

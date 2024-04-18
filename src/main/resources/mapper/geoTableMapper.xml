@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper">
+
+    <!--  모든 GeoTable을 조회합니다.  -->
     <select id="findAllGeoTable" resultType="GeoTable">
         select id, name
         from MAP;
     </select>
+
+    <!--  사용자가 소유한 GeoTable을 조회합니다.  -->
+    <select id="findGeoTableByUserId" resultType="GeoTable">
+        select id, name
+        from MAP
+        where owner=#{userId};
+    </select>
+
+    <!--  사용자가 소유한 GeoTable의 수를 셉니다.  -->
+    <select id="countUserGeoTable" resultType="java.lang.Integer">
+        select count(owner)
+        from MAP
+        where owner=#{userId};
+    </select>
+
+    <!--  GeoTable을 소유자와 이름을 통해 조회합니다.  -->
+    <select id="findGeoTableByUserIdAndName" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
+        select id, name
+        from MAP
+        where owner=#{userId} and name=#{name};
+    </select>
+
+    <select id="findById" resultType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails">
+        select id, name
+        from MAP
+        where id=#{id};
+    </select>
+
+    <!--  GeoTable을 추가합니다.  -->
+    <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into MAP(name, owner)
+        values (#{name}, #{userId});
+    </insert>
+
+    <!-- GeoTable의 이름을 변경합니다. -->
+    <update id="updateGeoTableName" >
+        update MAP
+        set name=#{name}
+        where id=#{id};
+    </update>
+
+    <!--  GeoTable을 id를 이용해 삭제합니다.  -->
+    <delete id="deleteGeoTableById">
+        delete GeoTable
+        where id=#{id};
+    </delete>
 </mapper>

@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.dto;
+package site.jaedoo.mygeorecord.web.controller.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

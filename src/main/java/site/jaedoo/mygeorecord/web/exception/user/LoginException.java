@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.service.user.exception;
+package site.jaedoo.mygeorecord.web.exception.user;
 
 /**
  * 로그인을 실패했을 때 예외를 던집니다.

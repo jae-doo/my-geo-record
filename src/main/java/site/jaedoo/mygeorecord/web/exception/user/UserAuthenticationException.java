@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.web.exception;
+package site.jaedoo.mygeorecord.web.exception.user;
 
 public class UserAuthenticationException extends RuntimeException {
     private static final String defaultMessage = "접근 권한이 없습니다.";

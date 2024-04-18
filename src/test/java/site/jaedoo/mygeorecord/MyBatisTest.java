@@ -20,6 +20,7 @@ public class MyBatisTest {
     @DisplayName("Mapper가 제대로 동작하는지 확인")
     void getResource() {
         Assertions.assertThat(geoTableMapper.findAllGeoTable()).isNotEmpty();
+        Assertions.assertThat(geoTableMapper.findGeoTableByUserId(1L)).isNotEmpty();
         Assertions.assertThat(userMapper.findAllUser()).isNotEmpty();
         Assertions.assertThat(dataGroupMapper.findAllDataGroupStringField()).isNotEmpty();
         Assertions.assertThat(dataGroupMapper.findAllDataGroupNumberField()).isNotEmpty();

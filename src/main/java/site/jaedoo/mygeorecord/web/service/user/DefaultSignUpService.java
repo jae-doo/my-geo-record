@@ -1,19 +1,20 @@
-package site.jaedoo.mygeorecord.service.user;
+package site.jaedoo.mygeorecord.web.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.jaedoo.mygeorecord.domain.entity.User;
 import site.jaedoo.mygeorecord.domain.repository.UserRepository;
+import site.jaedoo.mygeorecord.domain.service.SignUpService;
 
 import java.util.Optional;
 
 /**
  * 사용자의 회원가입을 처리합니다.
  */
-@Service
+@Service("signUpService")
 @RequiredArgsConstructor
-public class SignUpService {
+public class DefaultSignUpService implements SignUpService {
     private final UserRepository userRepository;
 
     /**
@@ -21,6 +22,7 @@ public class SignUpService {
      * @param email 서비스 상 유일한 이메일입니다.
      * @return 사용자가 이미 존재하면 true, 사용자가 없으면 false를 리턴
      */
+    @Override
     public boolean checkAlreadyExist(String email) {
         return userRepository.findUserByEmail(email).isPresent();
     }
@@ -34,6 +36,7 @@ public class SignUpService {
      * @return 이메일이 중복되거나 사용자 생성에 실패하면 빈 Optional,
      * 등록에 성공하면 해당 User를 Optional에 담아 리턴
      */
+    @Override
     @Transactional
     public Optional<User> signUp(String email, String password) {
         if (checkAlreadyExist(email)) return Optional.empty();

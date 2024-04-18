@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.service.user.exception;
+package site.jaedoo.mygeorecord.web.exception.user;
 
 /**
  * 사용자가 있어야 하나, 존재하지 않을 때 예외를 던집니다.
