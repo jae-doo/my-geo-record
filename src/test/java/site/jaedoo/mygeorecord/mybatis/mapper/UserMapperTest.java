@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import site.jaedoo.mygeorecord.domain.entity.User;
+import site.jaedoo.mygeorecord.mybatis.dto.UserDetails;
 
 import java.util.Optional;
 
@@ -19,9 +20,10 @@ class UserMapperTest {
         // given
         String email = "fosong98@gmail.com";
         String password = "1234";
+        UserDetails userDetails = new UserDetails(email, password);
 
         // when
-        int result = userMapper.insertUser(email, password);
+        int result = userMapper.insertUser(userDetails);
 
         // then
         Assertions.assertEquals(result, 1);
@@ -30,6 +32,7 @@ class UserMapperTest {
         Assertions.assertTrue(optionalUser.isPresent());
 
         User user = optionalUser.get();
+        Assertions.assertEquals(user.getId(), userDetails.getId());
         Assertions.assertEquals(user.getPassword(), password);
     }
 }
