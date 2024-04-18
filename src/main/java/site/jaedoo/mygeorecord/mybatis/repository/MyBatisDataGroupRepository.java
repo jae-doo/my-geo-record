@@ -2,12 +2,14 @@ package site.jaedoo.mygeorecord.mybatis.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import site.jaedoo.mygeorecord.domain.dto.UserDataGroupInfo;
 import site.jaedoo.mygeorecord.domain.entity.Column;
 import site.jaedoo.mygeorecord.domain.entity.DataGroup;
 import site.jaedoo.mygeorecord.domain.entity.Field;
 import site.jaedoo.mygeorecord.domain.entity.Row;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupField;
+import site.jaedoo.mygeorecord.mybatis.dto.UserDataGroupFieldInfo;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
 import java.util.*;
@@ -72,5 +74,11 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
         }
 
         return new ArrayList<>(dataGroups.values());
+    }
+
+    @Override
+    public List<UserDataGroupInfo> findAllUserDataGroupInfo(Long userId) {
+        // todo
+        List<UserDataGroupFieldInfo> allUserDataGroupFieldInfo = dataGroupMapper.findAllUserDataGroupFieldInfo(userId);
     }
 }
