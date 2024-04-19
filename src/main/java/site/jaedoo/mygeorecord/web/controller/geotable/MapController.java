@@ -10,6 +10,7 @@ import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.service.DataGroupService;
 import site.jaedoo.mygeorecord.domain.service.GeoTableService;
 import site.jaedoo.mygeorecord.web.constant.SessionConst;
+import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupForm;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.GeoTableForm;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.GeoTableResponse;
 
@@ -31,19 +32,13 @@ public class MapController {
         return ResponseEntity.ok(geoTableResponseList);
     }
 
-    @GetMapping("/{id}/data-group")
-    public ResponseEntity<List<DataGroupInfo>> findAllDataGroup(
-            @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId) {
-        List<DataGroupInfo> dataGroupInfos = dataGroupService.searchGeoTableDataGroups(userId, geoTableId);
-        return ResponseEntity.ok(dataGroupInfos);
-    }
-
     @PostMapping
     public ResponseEntity<GeoTableResponse> registerMap(
             @SessionAttribute(SessionConst.USER) Long id, @RequestBody GeoTableForm geoTableForm) {
         GeoTable geoTable = geoTableService.registerGeoTable(id, geoTableForm.name());
         return ResponseEntity.ok(new GeoTableResponse(geoTable));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<GeoTableResponse> updateMap(
@@ -63,5 +58,19 @@ public class MapController {
         if (success)
             return new ResponseEntity<>(HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/{id}/data-group")
+    public ResponseEntity<List<DataGroupInfo>> findAllDataGroup(
+            @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId) {
+        List<DataGroupInfo> dataGroupInfos = dataGroupService.searchGeoTableDataGroups(userId, geoTableId);
+        return ResponseEntity.ok(dataGroupInfos);
+    }
+
+    @PostMapping("/{id}/data-group")
+    public ResponseEntity<DataGroupInfo> registerDataGroup(
+            @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId,
+            @RequestBody DataGroupForm dataGroupForm) {
+
     }
 }

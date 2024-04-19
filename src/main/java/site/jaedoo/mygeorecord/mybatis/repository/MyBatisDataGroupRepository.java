@@ -118,4 +118,8 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
         return userDataGroupInfoList;
     }
 
+    @Override
+    public Optional<DataGroupInfo> insertDataGroup(Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList) {
+
+    }
 }
