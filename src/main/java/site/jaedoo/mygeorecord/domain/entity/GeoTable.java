@@ -10,4 +10,5 @@ import lombok.ToString;
 public class GeoTable {
     private Long id;
     private String name;
+    private Long owner;
 }

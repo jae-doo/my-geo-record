@@ -58,7 +58,13 @@ public class DefaultGeoTableService implements GeoTableService {
         Optional<GeoTable> optionalGeoTable = geoTableRepository.findById(geoTableId);
         optionalGeoTable.filter(geoTable -> geoTable.getId().equals(userId))
                 .orElseThrow(UserAuthenticationException::new);
-        Optional<GeoTable> optionalUpdatedGeoTable = geoTableRepository.updateGeoTableName(geoTableId, name);
+
+        int modified = geoTableRepository.updateGeoTableName(geoTableId, name);
+
+        Optional<GeoTable> optionalUpdatedGeoTable;
+        if (modified == 0) optionalUpdatedGeoTable = Optional.empty();
+        else optionalUpdatedGeoTable = geoTableRepository.findById(geoTableId);
+
         return optionalUpdatedGeoTable.orElseThrow(GeoTableNotFoundException::new);
     }
 

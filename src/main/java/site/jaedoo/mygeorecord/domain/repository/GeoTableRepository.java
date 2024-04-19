@@ -16,7 +16,7 @@ public interface GeoTableRepository {
 
     GeoTable insertGeoTable(Long userId, String name);
 
-    Optional<GeoTable> updateGeoTableName(Long id, String name);
+    int updateGeoTableName(Long id, String name);
 
     int deleteGeoTableById(Long id);
 }

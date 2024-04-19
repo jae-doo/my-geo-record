@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
+import site.jaedoo.mygeorecord.domain.service.DataGroupService;
 import site.jaedoo.mygeorecord.domain.service.GeoTableService;
 import site.jaedoo.mygeorecord.web.constant.SessionConst;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.GeoTableForm;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/map")
 public class MapController {
     private final GeoTableService geoTableService;
+    private final DataGroupService dataGroupService;
 
     @GetMapping
     public ResponseEntity<List<GeoTableResponse>> findMapByUserId(@SessionAttribute(SessionConst.USER) Long id) {
@@ -26,6 +29,13 @@ public class MapController {
                 .stream().map(GeoTableResponse::new)
                 .toList();
         return ResponseEntity.ok(geoTableResponseList);
+    }
+
+    @GetMapping("/{id}/data-group")
+    public ResponseEntity<List<DataGroupInfo>> findAllDataGroup(
+            @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId) {
+        List<DataGroupInfo> dataGroupInfos = dataGroupService.searchGeoTableDataGroups(userId, geoTableId);
+        return ResponseEntity.ok(dataGroupInfos);
     }
 
     @PostMapping

@@ -3,14 +3,14 @@ package site.jaedoo.mygeorecord.mybatis.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
-import site.jaedoo.mygeorecord.domain.dto.UserDataGroupInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
 import site.jaedoo.mygeorecord.domain.entity.Column;
 import site.jaedoo.mygeorecord.domain.entity.DataGroup;
 import site.jaedoo.mygeorecord.domain.entity.Field;
 import site.jaedoo.mygeorecord.domain.entity.Row;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupField;
-import site.jaedoo.mygeorecord.mybatis.dto.UserDataGroupFieldInfo;
+import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
 import java.util.*;
@@ -80,30 +80,42 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
     }
 
     @Override
-    public List<UserDataGroupInfo> findAllUserDataGroupInfo(Long userId) {
-        List<UserDataGroupFieldInfo> allUserDataGroupFieldInfo = dataGroupMapper.findAllUserDataGroupFieldInfo(userId);
+    public List<DataGroupInfo> findAllUserDataGroupInfo(Long userId) {
+        List<DataGroupFieldInfo> allUserDataGroupFieldInfo = dataGroupMapper.findAllDataGroupFieldInfoByUserId(userId);
 
-        Map<Long, List<UserDataGroupFieldInfo>> groupByGroupId = allUserDataGroupFieldInfo.stream()
-                .collect(groupingBy(UserDataGroupFieldInfo::getDataGroupId));
+        return mergeFieldToInfo(userId, allUserDataGroupFieldInfo);
+    }
 
-        List<UserDataGroupInfo> userDataGroupInfoList = new ArrayList<>();
-        for (Map.Entry<Long, List<UserDataGroupFieldInfo>> userDataGroupFieldInfoEntrySet: groupByGroupId.entrySet()) {
-            List<UserDataGroupFieldInfo> userDataGroupFieldInfoList = userDataGroupFieldInfoEntrySet.getValue();
-            UserDataGroupFieldInfo userDataGroupFieldInfo = userDataGroupFieldInfoList.get(0);
+    @Override
+    public List<DataGroupInfo> findAllGeoTableDataGroupInfo(Long userId, Long geoTableId) {
+        List<DataGroupFieldInfo> allGeoTableDataGroupFieldInfo = dataGroupMapper.findAllDataGroupFieldInfoByGeoTableId(geoTableId);
 
-            Long mapId = userDataGroupFieldInfo.getMapId();
-            String mapName = userDataGroupFieldInfo.getMapName();
-            Long dataGroupId = userDataGroupFieldInfo.getDataGroupId();
-            String dataGroupName = userDataGroupFieldInfo.getDataGroupName();
+        return mergeFieldToInfo(userId, allGeoTableDataGroupFieldInfo);
+    }
 
-            List<DataFieldInfo> dataFieldInfoList = userDataGroupFieldInfoList.stream().
+    private static List<DataGroupInfo> mergeFieldToInfo(Long userId, List<DataGroupFieldInfo> allUserDataGroupFieldInfo) {
+        Map<Long, List<DataGroupFieldInfo>> groupByGroupId = allUserDataGroupFieldInfo.stream()
+                                                                .collect(groupingBy(DataGroupFieldInfo::getDataGroupId));
+
+        List<DataGroupInfo> userDataGroupInfoList = new ArrayList<>();
+        for (Map.Entry<Long, List<DataGroupFieldInfo>> fieldInfoEntrySet: groupByGroupId.entrySet()) {
+            List<DataGroupFieldInfo> fieldInfoList = fieldInfoEntrySet.getValue();
+            DataGroupFieldInfo fieldInfo = fieldInfoList.get(0);
+
+            Long mapId = fieldInfo.getMapId();
+            String mapName = fieldInfo.getMapName();
+            Long dataGroupId = fieldInfo.getDataGroupId();
+            String dataGroupName = fieldInfo.getDataGroupName();
+
+            List<DataFieldInfo> dataFieldInfoList = fieldInfoList.stream().
                     map(u -> new DataFieldInfo(u.getFieldName(), u.getFieldType()))
                     .toList();
 
-            UserDataGroupInfo userDataGroupInfo = new UserDataGroupInfo(mapId, mapName, dataGroupId, userId, dataGroupName, dataFieldInfoList);
+            DataGroupInfo userDataGroupInfo = new DataGroupInfo(mapId, mapName, dataGroupId, userId, dataGroupName, dataFieldInfoList);
             userDataGroupInfoList.add(userDataGroupInfo);
         }
 
         return userDataGroupInfoList;
     }
+
 }

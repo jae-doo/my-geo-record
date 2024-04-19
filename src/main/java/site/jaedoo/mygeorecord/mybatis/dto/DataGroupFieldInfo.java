@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDataGroupFieldInfo {
+public class DataGroupFieldInfo {
     private Long mapId;
     private String mapName;
     private Long dataGroupId;

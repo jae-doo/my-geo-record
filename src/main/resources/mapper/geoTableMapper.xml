@@ -4,13 +4,13 @@
 
     <!--  모든 GeoTable을 조회합니다.  -->
     <select id="findAllGeoTable" resultType="GeoTable">
-        select id, name
+        select id, name, owner
         from MAP;
     </select>
 
     <!--  사용자가 소유한 GeoTable을 조회합니다.  -->
     <select id="findGeoTableByUserId" resultType="GeoTable">
-        select id, name
+        select id, name, owner
         from MAP
         where owner=#{userId};
     </select>
@@ -24,13 +24,13 @@
 
     <!--  GeoTable을 소유자와 이름을 통해 조회합니다.  -->
     <select id="findGeoTableByUserIdAndName" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
-        select id, name
+        select id, name, owner
         from MAP
         where owner=#{userId} and name=#{name};
     </select>
 
-    <select id="findById" resultType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails">
-        select id, name
+    <select id="findById" resultType="GeoTable">
+        select id, name, owner
         from MAP
         where id=#{id};
     </select>
@@ -51,7 +51,7 @@
 
     <!--  GeoTable을 id를 이용해 삭제합니다.  -->
     <delete id="deleteGeoTableById">
-        delete GeoTable
+        delete MAP
         where id=#{id};
     </delete>
 </mapper>

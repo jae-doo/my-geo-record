@@ -4,20 +4,26 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import site.jaedoo.mygeorecord.mybatis.dto.UserDataGroupFieldInfo;
+import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 class DataGroupMapperTest {
     @Autowired DataGroupMapper dataGroupMapper;
 
     @Test
-    @DisplayName("userDataGroupFieldInfo를 잘 가져오는지 확인")
+    @DisplayName("사용자가 식별자로 DataGroupFieldInfo를 잘 가져오는지 확인")
     void getUserDataFieldInfoTest() {
-        List<UserDataGroupFieldInfo> result = dataGroupMapper.findAllUserDataGroupFieldInfo(1L);
+        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupFieldInfoByUserId(1L);
+
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("지도 식별자로 DataGroupFieldInfo를 잘 가져오는지 확인")
+    void getDataFieldInfoTest() {
+        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupFieldInfoByGeoTableId(1L);
 
         result.forEach(System.out::println);
     }

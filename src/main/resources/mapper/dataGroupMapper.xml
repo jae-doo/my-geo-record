@@ -45,8 +45,8 @@
               dgf.data_type_id = dt.id and dt.type = 'NUMBER' and
               dgf.id = snf.data_group_field_id and sr.id = snf.spatial_record_id;
     </select>
-    <select id="findAllUserDataGroupFieldInfo"
-            resultType="site.jaedoo.mygeorecord.mybatis.dto.UserDataGroupFieldInfo">
+    <select id="findAllDataGroupFieldInfoByUserId"
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
         select
             dg.map_id       map_id,
             m.name          map_name,
@@ -59,6 +59,22 @@
         from data_group dg, data_group_field dgf, data_type dt, map m
         where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
             and m.owner = #{userId}
+        order by dgf.seq;
+    </select>
+    <select id="findAllDataGroupFieldInfoByGeoTableId"
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
+        select
+            dg.map_id       map_id,
+            m.name          map_name,
+
+            dg.id           data_group_id,
+            dg.name         data_group_name,
+
+            dgf.name        field_name,
+            dt.type         field_type
+        from data_group dg, data_group_field dgf, data_type dt, map m
+        where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
+          and m.id = #{mapId}
         order by dgf.seq;
     </select>
 </mapper>

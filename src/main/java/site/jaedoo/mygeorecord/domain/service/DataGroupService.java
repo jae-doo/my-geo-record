@@ -1,9 +1,10 @@
 package site.jaedoo.mygeorecord.domain.service;
 
-import site.jaedoo.mygeorecord.domain.dto.UserDataGroupInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
 
 import java.util.List;
 
 public interface DataGroupService {
-    List<UserDataGroupInfo> findAllUsersDataGroup(Long userId);
+    List<DataGroupInfo> searchUserDataGroups(Long userId);
+    List<DataGroupInfo> searchGeoTableDataGroups(Long userId, Long geoTableId);
 }
