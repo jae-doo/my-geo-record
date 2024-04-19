@@ -16,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/signUp")
+@RequestMapping("/sign-up")
 public class SignUpController {
     private final SignUpService signUpService;
 

@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.service.GeoTableService;
 import site.jaedoo.mygeorecord.web.constant.SessionConst;
@@ -33,7 +31,7 @@ public class MapController {
     @PostMapping
     public ResponseEntity<GeoTableResponse> registerMap(
             @SessionAttribute(SessionConst.USER) Long id, @RequestBody GeoTableForm geoTableForm) {
-        GeoTable geoTable = geoTableService.registerGeoTable(id, geoTableForm.getName());
+        GeoTable geoTable = geoTableService.registerGeoTable(id, geoTableForm.name());
         return ResponseEntity.ok(new GeoTableResponse(geoTable));
     }
 
@@ -42,7 +40,7 @@ public class MapController {
             @SessionAttribute(SessionConst.USER) Long userId,
             @PathVariable("id") Long geoTableId,
             @RequestBody GeoTableForm geoTableForm) {
-        GeoTable geoTable = geoTableService.updateGeoTable(geoTableId, userId, geoTableForm.getName());
+        GeoTable geoTable = geoTableService.updateGeoTable(geoTableId, userId, geoTableForm.name());
         return ResponseEntity.ok(new GeoTableResponse(geoTable));
     }
 

@@ -40,7 +40,7 @@
 
             dt.type         data_type
         from data_group dg, spatial_record sr, data_group_field dgf,
-             SPATIAL_NUMBER_FIELD snf, data_type dt
+             spatial_number_field snf, data_type dt
         where dg.id = sr.data_group_id and dg.id = dgf.data_group_id and
               dgf.data_type_id = dt.id and dt.type = 'NUMBER' and
               dgf.id = snf.data_group_field_id and sr.id = snf.spatial_record_id;
@@ -48,6 +48,9 @@
     <select id="findAllUserDataGroupFieldInfo"
             resultType="site.jaedoo.mygeorecord.mybatis.dto.UserDataGroupFieldInfo">
         select
+            dg.map_id       map_id,
+            m.name          map_name,
+
             dg.id           data_group_id,
             dg.name         data_group_name,
 
@@ -55,6 +58,7 @@
             dt.type         field_type
         from data_group dg, data_group_field dgf, data_type dt, map m
         where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
-            and m.owner = #{userId};
+            and m.owner = #{userId}
+        order by dgf.seq;
     </select>
 </mapper>
