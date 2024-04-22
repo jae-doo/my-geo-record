@@ -4,13 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
 import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInsertInfo;
 import site.jaedoo.mygeorecord.domain.entity.Column;
 import site.jaedoo.mygeorecord.domain.entity.DataGroup;
 import site.jaedoo.mygeorecord.domain.entity.Field;
 import site.jaedoo.mygeorecord.domain.entity.Row;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
+import site.jaedoo.mygeorecord.mybatis.dto.DataGroupCreation;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupField;
+import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldCreation;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo;
+import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
 import java.util.*;
@@ -22,6 +26,7 @@ import static java.util.stream.Collectors.groupingBy;
 @RequiredArgsConstructor
 public class MyBatisDataGroupRepository implements DataGroupRepository {
     private final DataGroupMapper dataGroupMapper;
+    private final DataGroupFieldMapper fieldMapper;
 
     @Override
     public List<DataGroup> findAllDataGroup() {
@@ -43,7 +48,7 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
             if (!dataGroups.containsKey(groupId)) {
                 List<Column> columns = new ArrayList<>();
                 for (DataGroupField fields : queue) {
-                    if (fields.getRowId() != rowId) break;
+                    if (!Objects.equals(fields.getRowId(), rowId)) break;
                     columns.add(new Column(fields.getColumnName(), fields.getDataType()));
                 }
 
@@ -60,7 +65,7 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
 
             // Data 설정
             Map<String, Field> data = new HashMap<>();
-            while (!queue.isEmpty() && queue.peek().getRowId() == rowId) {
+            while (!queue.isEmpty() && Objects.equals(queue.peek().getRowId(), rowId)) {
                 dataGroupField = queue.poll();
                 String name = dataGroupField.getColumnName();
                 Field field = new Field(dataGroupField.getData());
@@ -118,8 +123,13 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
         return userDataGroupInfoList;
     }
 
-    @Override
-    public Optional<DataGroupInfo> insertDataGroup(Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList) {
+    public int insertDataGroup(DataGroupInsertInfo info) {
+        DataGroupCreation dataGroupCreation = new DataGroupCreation(info.mapId(), info.dataGroupName());
+        int dataGroupModified = dataGroupMapper.insertDataGroup(dataGroupCreation);
 
+        Long dataGroupId = dataGroupCreation.getDataGroupId();
+        int fieldModified = fieldMapper.insertDataGroupField(new DataGroupFieldCreation(dataGroupId, info.dataFieldInfoList()));
+
+        return dataGroupModified + fieldModified;
     }
 }

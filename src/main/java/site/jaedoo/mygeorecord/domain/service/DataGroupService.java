@@ -8,5 +8,5 @@ import java.util.List;
 public interface DataGroupService {
     List<DataGroupInfo> searchUserDataGroups(Long userId);
     List<DataGroupInfo> searchGeoTableDataGroups(Long userId, Long geoTableId);
-    DataGroupInfo createDataGroup(Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList);
+    List<DataGroupInfo> createDataGroup(Long userId, Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList);
 }

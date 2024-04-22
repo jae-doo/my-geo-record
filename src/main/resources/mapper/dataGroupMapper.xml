@@ -77,4 +77,10 @@
           and m.id = #{mapId}
         order by dgf.seq;
     </select>
+    <insert id="insertDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupCreation"
+            useGeneratedKeys="true" keyProperty="dataGroupId">
+        insert into data_group(name, map_id)
+        values
+            (#{groupName}, #{mapId});
+    </insert>
 </mapper>

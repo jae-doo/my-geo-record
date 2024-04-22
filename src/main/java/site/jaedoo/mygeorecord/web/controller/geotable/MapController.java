@@ -68,9 +68,10 @@ public class MapController {
     }
 
     @PostMapping("/{id}/data-group")
-    public ResponseEntity<DataGroupInfo> registerDataGroup(
+    public ResponseEntity<List<DataGroupInfo>> registerDataGroup(
             @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId,
             @RequestBody DataGroupForm dataGroupForm) {
-
+        List<DataGroupInfo> dataGroupInfos = dataGroupService.createDataGroup(userId, geoTableId, dataGroupForm.name(), dataGroupForm.fieldInfoList());
+        return ResponseEntity.ok(dataGroupInfos);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
 import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInsertInfo;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
 import site.jaedoo.mygeorecord.domain.repository.GeoTableRepository;
@@ -56,10 +57,13 @@ public class DefaultDataGroupService implements DataGroupService {
      * @return
      */
     @Override
-    public DataGroupInfo createDataGroup(Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList) {
-        Optional<DataGroupInfo> optionalDataGroupInfo
-                = dataGroupRepository.insertDataGroup(mapId, dataGroupName, dataFieldInfoList);
+    @Transactional
+    public List<DataGroupInfo> createDataGroup(Long userId, Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList) {
+        DataGroupInsertInfo insertInfo = new DataGroupInsertInfo(userId, mapId, dataGroupName, dataFieldInfoList);
+        int result = dataGroupRepository.insertDataGroup(insertInfo);
 
-        return optionalDataGroupInfo.orElseThrow(UserAuthenticationException::new);
+        if (result <= 0) throw new UserAuthenticationException();
+
+        return dataGroupRepository.findAllGeoTableDataGroupInfo(userId, mapId);
     }
 }
