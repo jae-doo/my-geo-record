@@ -16,6 +16,7 @@ import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -113,7 +114,7 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
 
     private static class DataGroupInfoCollector implements Collector<DataGroupFieldInfo, Map<Long, DataGroupInfoCollector.DataGroupStore>, List<DataGroupInfo>> {
         public Supplier<Map<Long, DataGroupStore>> supplier() {
-            return HashMap::new;
+            return ConcurrentHashMap::new;
         }
 
         public BiConsumer<Map<Long, DataGroupStore>, DataGroupFieldInfo> accumulator() {
@@ -126,7 +127,7 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
         @Override
         public BinaryOperator<Map<Long, DataGroupStore>> combiner() {
             return (a, b) -> {
-                b.entrySet().forEach((k)->a.put(k.getKey(),k.getValue()));
+                b.entrySet().forEach(e->a.put(e.getKey(), e.getValue()));
                 return a;
             };
         }
@@ -139,13 +140,11 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
 
         @Override
         public Set<Characteristics> characteristics() {
-            return Collections.unmodifiableNavigableSet(
-                    (NavigableSet<Characteristics>) EnumSet.of(Characteristics.IDENTITY_FINISH)
-            );
+            return Set.of();
         }
 
         @Data
-        private static class DataGroupStore {
+        public static class DataGroupStore {
             Long mapId;
             Long dataGroupId;
             String groupName;
@@ -154,12 +153,12 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
             public DataGroupStore(DataGroupFieldInfo dgif) {
                 this.mapId = dgif.getMapId();
                 this.dataGroupId = dgif.getDataGroupId();
-                this.groupName = dgif.getGroupName();
+                this.groupName = dgif.getDataGroupName();
                 columnList = new ArrayList<>();
             }
 
             public void addColumn(DataGroupFieldInfo dgfi) {
-                columnList.add(new Column(dgfi.getFieldName(), DataType.valueOf(dgfi.getTypeName())));
+                columnList.add(new Column(dgfi.getFieldName(), DataType.valueOf(dgfi.getFieldType())));
             }
 
             public DataGroupInfo toDataGroupInfo() {

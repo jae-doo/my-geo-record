@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class DataGroupFieldInfo {
     Long mapId;
     Long dataGroupId;
-    String groupName;
+    String dataGroupName;
     String fieldName;
-    String typeName;
+    String fieldType;
 }

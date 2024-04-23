@@ -18,12 +18,4 @@ public record DataGroupInfo(
         Long dataGroupId,
         String groupName,
         List<Column> columnList
-) {
-    public DataGroupInfo(Long mapId, Long dataGroupId, String groupName, List<Column> columnList) {
-        this.mapId = mapId;
-        this.dataGroupId = dataGroupId;
-        this.groupName = groupName;
-        this.columnList = Collections.unmodifiableList(columnList);
-    }
-
-}
+) {}

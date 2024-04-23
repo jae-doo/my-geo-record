@@ -3,7 +3,7 @@
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper">
 
     <select id="findAllDataGroupInfoByUserId"
-            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
+            resultType="DataGroupFieldInfo">
         select
             dg.map_id       map_id,
 
@@ -19,7 +19,7 @@
     </select>
 
     <select id="findAllDataGroupInfoByGeoTableId"
-            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
+            resultType="DataGroupFieldInfo">
         select
             dg.map_id       map_id,
             dg.id           data_group_id,
