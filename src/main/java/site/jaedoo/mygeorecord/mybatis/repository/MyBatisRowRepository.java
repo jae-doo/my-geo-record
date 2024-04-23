@@ -5,13 +5,11 @@ import org.springframework.stereotype.Repository;
 import site.jaedoo.mygeorecord.domain.entity.Field;
 import site.jaedoo.mygeorecord.domain.entity.Row;
 import site.jaedoo.mygeorecord.domain.repository.RowRepository;
-import site.jaedoo.mygeorecord.mybatis.dto.RowData;
+import site.jaedoo.mygeorecord.mybatis.dto.all.RowData;
 import site.jaedoo.mygeorecord.mybatis.mapper.RowDataMapper;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;

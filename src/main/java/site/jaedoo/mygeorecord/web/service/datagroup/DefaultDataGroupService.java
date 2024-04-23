@@ -3,9 +3,8 @@ package site.jaedoo.mygeorecord.web.service.datagroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupCreation;
 import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
-import site.jaedoo.mygeorecord.domain.dto.DataGroupInsertInfo;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
 import site.jaedoo.mygeorecord.domain.repository.GeoTableRepository;
@@ -58,12 +57,13 @@ public class DefaultDataGroupService implements DataGroupService {
      */
     @Override
     @Transactional
-    public List<DataGroupInfo> createDataGroup(Long userId, Long mapId, String dataGroupName, List<DataFieldInfo> dataFieldInfoList) {
-        DataGroupInsertInfo insertInfo = new DataGroupInsertInfo(userId, mapId, dataGroupName, dataFieldInfoList);
-        int result = dataGroupRepository.insertDataGroup(insertInfo);
+    public List<DataGroupInfo> createDataGroup(DataGroupCreation dataGroupCreation) {
+        int result = dataGroupRepository.insertDataGroup(dataGroupCreation);
 
         if (result <= 0) throw new UserAuthenticationException();
 
+        Long userId = dataGroupCreation.userId();
+        Long mapId = dataGroupCreation.mapId();
         return dataGroupRepository.findAllGeoTableDataGroupInfo(userId, mapId);
     }
 }

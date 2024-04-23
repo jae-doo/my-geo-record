@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper">
-    <insert id="insertDataGroupField" parameterType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldCreation">
+    <insert id="insertDataGroupField">
         insert into data_group_field(name, seq, data_group_id, data_type_id)
         values
-        <foreach collection="dataFieldInfoList" separator="," item="fieldInfo" index="index">
+        <foreach collection="columnList" separator="," item="fieldInfo" index="index">
             (#{fieldInfo.fieldName}, #{index}, #{dataGroupId}, (select id from data_type where type=#{fieldInfo.type}))
         </foreach>
     </insert>

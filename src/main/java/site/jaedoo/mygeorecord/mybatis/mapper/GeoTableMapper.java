@@ -2,7 +2,7 @@ package site.jaedoo.mygeorecord.mybatis.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
-import site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails;
+import site.jaedoo.mygeorecord.mybatis.dto.GeoTableInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,7 @@ public interface GeoTableMapper {
 
     Optional<GeoTable> findById(Long id);
 
-    int insertGeoTable(GeoTableDetails geoTableDetails);
+    int insertGeoTable(GeoTableInfo geoTableDetails);
 
     int updateGeoTableName(Long id, String name);
 

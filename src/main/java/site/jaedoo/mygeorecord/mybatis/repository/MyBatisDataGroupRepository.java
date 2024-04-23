@@ -1,26 +1,30 @@
 package site.jaedoo.mygeorecord.mybatis.repository;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.bytecode.FieldInfo;
 import org.springframework.stereotype.Repository;
-import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupCreation;
 import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
-import site.jaedoo.mygeorecord.domain.dto.DataGroupInsertInfo;
-import site.jaedoo.mygeorecord.domain.entity.Column;
-import site.jaedoo.mygeorecord.domain.entity.DataGroup;
-import site.jaedoo.mygeorecord.domain.entity.Field;
-import site.jaedoo.mygeorecord.domain.entity.Row;
+import site.jaedoo.mygeorecord.domain.entity.*;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
-import site.jaedoo.mygeorecord.mybatis.dto.DataGroupCreation;
-import site.jaedoo.mygeorecord.mybatis.dto.DataGroupField;
-import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldCreation;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo;
+import site.jaedoo.mygeorecord.mybatis.dto.DataGroupInsert;
+import site.jaedoo.mygeorecord.mybatis.dto.all.DataGroupField;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 
 @Repository("dataGroupRepository")
 @RequiredArgsConstructor
@@ -86,50 +90,81 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
 
     @Override
     public List<DataGroupInfo> findAllUserDataGroupInfo(Long userId) {
-        List<DataGroupFieldInfo> allUserDataGroupFieldInfo = dataGroupMapper.findAllDataGroupFieldInfoByUserId(userId);
-
-        return mergeFieldToInfo(userId, allUserDataGroupFieldInfo);
+        return dataGroupMapper.findAllDataGroupInfoByUserId(userId)
+                .stream().collect(new DataGroupInfoCollector());
     }
 
     @Override
     public List<DataGroupInfo> findAllGeoTableDataGroupInfo(Long userId, Long geoTableId) {
-        List<DataGroupFieldInfo> allGeoTableDataGroupFieldInfo = dataGroupMapper.findAllDataGroupFieldInfoByGeoTableId(geoTableId);
-
-        return mergeFieldToInfo(userId, allGeoTableDataGroupFieldInfo);
+        return dataGroupMapper.findAllDataGroupInfoByGeoTableId(geoTableId)
+                .stream().collect(new DataGroupInfoCollector());
     }
 
-    private static List<DataGroupInfo> mergeFieldToInfo(Long userId, List<DataGroupFieldInfo> allUserDataGroupFieldInfo) {
-        Map<Long, List<DataGroupFieldInfo>> groupByGroupId = allUserDataGroupFieldInfo.stream()
-                                                                .collect(groupingBy(DataGroupFieldInfo::getDataGroupId));
+    @Override
+    public int insertDataGroup(DataGroupCreation dataGroupCreation) {
+        DataGroupInsert dataGroupInsert = new DataGroupInsert(dataGroupCreation.mapId(), dataGroupCreation.dataGroupName());
+        int dataGroupModified = dataGroupMapper.insertDataGroup(dataGroupInsert);
 
-        List<DataGroupInfo> userDataGroupInfoList = new ArrayList<>();
-        for (Map.Entry<Long, List<DataGroupFieldInfo>> fieldInfoEntrySet: groupByGroupId.entrySet()) {
-            List<DataGroupFieldInfo> fieldInfoList = fieldInfoEntrySet.getValue();
-            DataGroupFieldInfo fieldInfo = fieldInfoList.get(0);
-
-            Long mapId = fieldInfo.getMapId();
-            String mapName = fieldInfo.getMapName();
-            Long dataGroupId = fieldInfo.getDataGroupId();
-            String dataGroupName = fieldInfo.getDataGroupName();
-
-            List<DataFieldInfo> dataFieldInfoList = fieldInfoList.stream().
-                    map(u -> new DataFieldInfo(u.getFieldName(), u.getFieldType()))
-                    .toList();
-
-            DataGroupInfo userDataGroupInfo = new DataGroupInfo(mapId, mapName, dataGroupId, userId, dataGroupName, dataFieldInfoList);
-            userDataGroupInfoList.add(userDataGroupInfo);
-        }
-
-        return userDataGroupInfoList;
-    }
-
-    public int insertDataGroup(DataGroupInsertInfo info) {
-        DataGroupCreation dataGroupCreation = new DataGroupCreation(info.mapId(), info.dataGroupName());
-        int dataGroupModified = dataGroupMapper.insertDataGroup(dataGroupCreation);
-
-        Long dataGroupId = dataGroupCreation.getDataGroupId();
-        int fieldModified = fieldMapper.insertDataGroupField(new DataGroupFieldCreation(dataGroupId, info.dataFieldInfoList()));
+        Long dataGroupId = dataGroupInsert.getDataGroupId();
+        int fieldModified = fieldMapper.insertDataGroupField(dataGroupId, dataGroupCreation.columnList());
 
         return dataGroupModified + fieldModified;
+    }
+
+    private static class DataGroupInfoCollector implements Collector<DataGroupFieldInfo, Map<Long, DataGroupInfoCollector.DataGroupStore>, List<DataGroupInfo>> {
+        public Supplier<Map<Long, DataGroupStore>> supplier() {
+            return HashMap::new;
+        }
+
+        public BiConsumer<Map<Long, DataGroupStore>, DataGroupFieldInfo> accumulator() {
+            return (map, dataGroupFieldInfo) -> {
+                map.computeIfAbsent(dataGroupFieldInfo.getDataGroupId(), (key) -> new DataGroupStore(dataGroupFieldInfo))
+                        .addColumn(dataGroupFieldInfo);
+            };
+        }
+
+        @Override
+        public BinaryOperator<Map<Long, DataGroupStore>> combiner() {
+            return (a, b) -> {
+                b.entrySet().forEach((k)->a.put(k.getKey(),k.getValue()));
+                return a;
+            };
+        }
+
+        public Function<Map<Long, DataGroupStore>, List<DataGroupInfo>> finisher() {
+            return map -> map.values().stream()
+                    .map(DataGroupStore::toDataGroupInfo)
+                    .toList();
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Collections.unmodifiableNavigableSet(
+                    (NavigableSet<Characteristics>) EnumSet.of(Characteristics.IDENTITY_FINISH)
+            );
+        }
+
+        @Data
+        private static class DataGroupStore {
+            Long mapId;
+            Long dataGroupId;
+            String groupName;
+            List<Column> columnList;
+
+            public DataGroupStore(DataGroupFieldInfo dgif) {
+                this.mapId = dgif.getMapId();
+                this.dataGroupId = dgif.getDataGroupId();
+                this.groupName = dgif.getGroupName();
+                columnList = new ArrayList<>();
+            }
+
+            public void addColumn(DataGroupFieldInfo dgfi) {
+                columnList.add(new Column(dgfi.getFieldName(), DataType.valueOf(dgfi.getTypeName())));
+            }
+
+            public DataGroupInfo toDataGroupInfo() {
+                return new DataGroupInfo(mapId, dataGroupId, groupName, columnList);
+            }
+        }
     }
 }

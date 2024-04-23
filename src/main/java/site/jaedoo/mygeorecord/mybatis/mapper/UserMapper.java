@@ -3,7 +3,7 @@ package site.jaedoo.mygeorecord.mybatis.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import site.jaedoo.mygeorecord.domain.entity.User;
-import site.jaedoo.mygeorecord.mybatis.dto.UserDetails;
+import site.jaedoo.mygeorecord.mybatis.dto.UserInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserMapper {
     List<User> findAllUser();
     Optional<User> findUserByEmail(@Param("email") String email);
-    int insertUser(UserDetails userDetails);
+    int insertUser(UserInfo userDetails);
 }

@@ -4,8 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import site.jaedoo.mygeorecord.domain.dto.DataFieldInfo;
-import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldCreation;
+import site.jaedoo.mygeorecord.domain.entity.Column;
+import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupFieldForm;
 
 import java.util.List;
 
@@ -19,18 +19,16 @@ class DataGroupFieldMapperTest {
     @DisplayName("DataGroupField 삽입 로직 테스트")
     void insertDataGroupField() {
         // given
-        List<DataFieldInfo> dataFieldInfoList = List.of(
-                new DataFieldInfo("field1", "STRING"),
-                new DataFieldInfo("field2", "STRING"),
-                new DataFieldInfo("field3", "NUMBER")
-        );
-        DataGroupFieldCreation dgfc = new DataGroupFieldCreation(1L, dataFieldInfoList);
+        List<Column> columnList = List.of(
+                new DataGroupFieldForm("field1", "STRING"),
+                new DataGroupFieldForm("field2", "STRING"),
+                new DataGroupFieldForm("field3", "NUMBER")
+        ).stream().map(DataGroupFieldForm::toColumn).toList();
 
         // when
-        int modified = dataGroupFieldMapper.insertDataGroupField(dgfc);
+        int modified = dataGroupFieldMapper.insertDataGroupField(1L, columnList);
 
         // then
         assertThat(modified).isGreaterThan(0);
-        assertThat(dgfc.getDataGroupId()).isNotNull();
     }
 }

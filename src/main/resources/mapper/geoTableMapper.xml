@@ -3,13 +3,13 @@
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper">
 
     <!--  모든 GeoTable을 조회합니다.  -->
-    <select id="findAllGeoTable" resultType="GeoTable">
+    <select id="findAllGeoTable" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
         select id, name, owner
         from MAP;
     </select>
 
     <!--  사용자가 소유한 GeoTable을 조회합니다.  -->
-    <select id="findGeoTableByUserId" resultType="GeoTable">
+    <select id="findGeoTableByUserId" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
         select id, name, owner
         from MAP
         where owner=#{userId};
@@ -36,7 +36,7 @@
     </select>
 
     <!--  GeoTable을 추가합니다.  -->
-    <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableDetails"
+    <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableInfo"
             useGeneratedKeys="true" keyProperty="id">
         insert into MAP(name, owner)
         values (#{name}, #{userId});

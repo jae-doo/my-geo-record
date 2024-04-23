@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataGroupCreation {
+public class DataGroupInsert {
     private Long dataGroupId;
 
     private Long mapId;
     private String groupName;
 
-    public DataGroupCreation(Long mapId, String groupName) {
+    public DataGroupInsert(Long mapId, String groupName) {
         this.mapId = mapId;
         this.groupName = groupName;
     }

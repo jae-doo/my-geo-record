@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
 import site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo;
+import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupFieldForm;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ class DataGroupMapperTest {
     @Test
     @DisplayName("사용자가 식별자로 DataGroupFieldInfo를 잘 가져오는지 확인")
     void getUserDataFieldInfoTest() {
-        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupFieldInfoByUserId(1L);
+        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupInfoByUserId(1L);
 
         result.forEach(System.out::println);
     }
@@ -23,7 +25,7 @@ class DataGroupMapperTest {
     @Test
     @DisplayName("지도 식별자로 DataGroupFieldInfo를 잘 가져오는지 확인")
     void getDataFieldInfoTest() {
-        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupFieldInfoByGeoTableId(1L);
+        List<DataGroupFieldInfo> result = dataGroupMapper.findAllDataGroupInfoByGeoTableId(1L);
 
         result.forEach(System.out::println);
     }

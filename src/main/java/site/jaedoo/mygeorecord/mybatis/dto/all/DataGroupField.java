@@ -1,4 +1,4 @@
-package site.jaedoo.mygeorecord.mybatis.dto;
+package site.jaedoo.mygeorecord.mybatis.dto.all;
 
 import lombok.Data;
 import site.jaedoo.mygeorecord.domain.entity.DataType;

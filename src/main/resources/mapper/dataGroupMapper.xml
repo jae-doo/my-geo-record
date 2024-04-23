@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper">
+
+    <select id="findAllDataGroupInfoByUserId"
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
+        select
+            dg.map_id       map_id,
+
+            dg.id           data_group_id,
+            dg.name         data_group_name,
+
+            dgf.name        field_name,
+            dt.type         field_type
+        from data_group dg, data_group_field dgf, map m, data_type dt
+        where dg.id = dgf.data_group_id and m.id = dg.map_id
+            and m.owner = #{userId} and dt.id = dgf.data_type_id
+        order by dgf.seq;
+    </select>
+
+    <select id="findAllDataGroupInfoByGeoTableId"
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
+        select
+            dg.map_id       map_id,
+            dg.id           data_group_id,
+            dg.name         data_group_name,
+
+            dgf.name        field_name,
+            dt.type         field_type
+        from data_group dg, data_group_field dgf, data_type dt, map m
+        where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
+          and m.id = #{mapId}
+        order by dgf.seq;
+    </select>
+
+    <insert id="insertDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupInsert"
+            useGeneratedKeys="true" keyProperty="dataGroupId">
+        insert into data_group(name, map_id)
+        values
+            (#{groupName}, #{mapId});
+    </insert>
+
     <select id="findAllDataGroupStringField" resultType="DataGroupField">
         select
             dg.id           group_id,
@@ -45,42 +84,4 @@
               dgf.data_type_id = dt.id and dt.type = 'NUMBER' and
               dgf.id = snf.data_group_field_id and sr.id = snf.spatial_record_id;
     </select>
-    <select id="findAllDataGroupFieldInfoByUserId"
-            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
-        select
-            dg.map_id       map_id,
-            m.name          map_name,
-
-            dg.id           data_group_id,
-            dg.name         data_group_name,
-
-            dgf.name        field_name,
-            dt.type         field_type
-        from data_group dg, data_group_field dgf, data_type dt, map m
-        where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
-            and m.owner = #{userId}
-        order by dgf.seq;
-    </select>
-    <select id="findAllDataGroupFieldInfoByGeoTableId"
-            resultType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupFieldInfo">
-        select
-            dg.map_id       map_id,
-            m.name          map_name,
-
-            dg.id           data_group_id,
-            dg.name         data_group_name,
-
-            dgf.name        field_name,
-            dt.type         field_type
-        from data_group dg, data_group_field dgf, data_type dt, map m
-        where dg.id = dgf.data_group_id and dt.id = dgf.data_type_id and m.id = dg.map_id
-          and m.id = #{mapId}
-        order by dgf.seq;
-    </select>
-    <insert id="insertDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupCreation"
-            useGeneratedKeys="true" keyProperty="dataGroupId">
-        insert into data_group(name, map_id)
-        values
-            (#{groupName}, #{mapId});
-    </insert>
 </mapper>

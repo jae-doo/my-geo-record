@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupCreation;
 import site.jaedoo.mygeorecord.domain.dto.DataGroupInfo;
+import site.jaedoo.mygeorecord.domain.entity.Column;
 import site.jaedoo.mygeorecord.domain.entity.GeoTable;
 import site.jaedoo.mygeorecord.domain.service.DataGroupService;
 import site.jaedoo.mygeorecord.domain.service.GeoTableService;
 import site.jaedoo.mygeorecord.web.constant.SessionConst;
+import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupFieldForm;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupForm;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.GeoTableForm;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.GeoTableResponse;
@@ -71,7 +74,14 @@ public class MapController {
     public ResponseEntity<List<DataGroupInfo>> registerDataGroup(
             @SessionAttribute(SessionConst.USER) Long userId, @PathVariable("id") Long geoTableId,
             @RequestBody DataGroupForm dataGroupForm) {
-        List<DataGroupInfo> dataGroupInfos = dataGroupService.createDataGroup(userId, geoTableId, dataGroupForm.name(), dataGroupForm.fieldInfoList());
+
+        String dataGroupName = dataGroupForm.name();
+        List<Column> columnList = dataGroupForm.fieldInfoList().stream()
+                .map(DataGroupFieldForm::toColumn)
+                .toList();
+
+        DataGroupCreation dataGroupCreation = new DataGroupCreation(userId, geoTableId, dataGroupName, columnList);
+        List<DataGroupInfo> dataGroupInfos = dataGroupService.createDataGroup(dataGroupCreation);
         return ResponseEntity.ok(dataGroupInfos);
     }
 }

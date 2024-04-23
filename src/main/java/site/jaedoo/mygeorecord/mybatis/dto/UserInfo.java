@@ -4,12 +4,12 @@ import lombok.Data;
 import site.jaedoo.mygeorecord.domain.entity.User;
 
 @Data
-public class UserDetails {
+public class UserInfo {
     private Long id;
     private String email;
     private String password;
 
-    public UserDetails(String email, String password) {
+    public UserInfo(String email, String password) {
         this.email = email;
         this.password = password;
     }
