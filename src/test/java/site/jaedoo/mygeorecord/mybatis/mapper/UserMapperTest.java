@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import site.jaedoo.mygeorecord.domain.entity.User;
-import site.jaedoo.mygeorecord.mybatis.dto.UserInfo;
+import site.jaedoo.mygeorecord.mybatis.dto.user.UserRecord;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ class UserMapperTest {
         // given
         String email = "fosong98@gmail.com";
         String password = "1234";
-        UserInfo userDetails = new UserInfo(email, password);
+        UserRecord userDetails = new UserRecord(email, password);
 
         // when
         int result = userMapper.insertUser(userDetails);

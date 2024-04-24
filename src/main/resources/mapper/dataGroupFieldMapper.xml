@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper">
-    <insert id="insertDataGroupField">
+    <insert id="batchInsertDataGroupField">
         insert into data_group_field(name, seq, data_group_id, data_type_id)
         values
         <foreach collection="columnList" separator="," item="fieldInfo" index="index">
-            (#{fieldInfo.fieldName}, #{index}, #{dataGroupId}, (select id from data_type where type=#{fieldInfo.type}))
+            (#{fieldInfo.fieldName}, #{index}, #{dataGroupId}, (select id from data_type where type=#{fieldInfo.fieldType}))
         </foreach>
     </insert>
+
+    <insert id="insertDataGroupField" useGeneratedKeys="true" keyColumn="dataGroupFieldId">
+        insert into data_group_field(name, seq, data_group_id, data_type_id)
+        values
+            (#{fieldInfo.fieldName},
+             (select count(id) + 1 from data_group_field where data_group_id = #{dataGroupId}),
+             #{dataGroupId},
+             (select id from data_type where type=#{fieldInfo.fieldType}))
+    </insert>
+
+    <update id="updateDataGroupField">
+        update data_group_field
+        set name    = ${dataGroupFieldName},
+            seq     = ${order},
+            data_type_id = (select id from data_type where type = ${dataGroupFieldType})
+        where
+            id = ${dataGroupFieldId}
+    </update>
 </mapper>

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import site.jaedoo.mygeorecord.mybatis.dto.GeoTableInfo;
+import site.jaedoo.mygeorecord.mybatis.dto.geotable.GeoTableRecord;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -18,7 +18,7 @@ class GeoTableMapperTest {
     @DisplayName("GeoTable의 아이디가 제대로 생성되는지 확인")
     void generatedKeyTest() {
         // given
-        GeoTableInfo geoTableDetails = new GeoTableInfo(1L, "test");
+        GeoTableRecord geoTableDetails = new GeoTableRecord(1L, "test");
 
         // when
         int modified = geoTableMapper.insertGeoTable(geoTableDetails);

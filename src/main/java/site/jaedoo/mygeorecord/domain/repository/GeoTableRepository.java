@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GeoTableRepository {
-    List<GeoTable> findAllGeoTable();
-
     List<GeoTable> findByUserId(Long userId);
 
     int countUserGeoTable(Long userId);

@@ -1,16 +1,15 @@
-package site.jaedoo.mygeorecord.mybatis.dto;
+package site.jaedoo.mygeorecord.mybatis.dto.datagroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class DataGroupFieldInfo {
+public class DataGroupFieldRecord {
     Long mapId;
     Long dataGroupId;
     String dataGroupName;
+    Long fieldId;
     String fieldName;
     String fieldType;
 }

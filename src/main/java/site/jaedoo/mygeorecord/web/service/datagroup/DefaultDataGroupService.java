@@ -50,10 +50,10 @@ public class DefaultDataGroupService implements DataGroupService {
     }
 
     /**
-     *
-     * @param dataGroupName
-     * @param dataFieldInfoList
-     * @return
+     * DataGroup을 생성한 후, 해당 map의 모든 DataGroup을 조회하여 리턴합니다.
+     * @param dataGroupCreation DataGroup 생성에 필요한 정보
+     * @return 사용자가 소유한 지도에 대한 모든 DataGroup 정보를 리턴
+     * @throws UserAuthenticationException 사용자가 DataGroup 생성 권한이 없을 경우 던집니다.
      */
     @Override
     @Transactional

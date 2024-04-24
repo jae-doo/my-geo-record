@@ -3,13 +3,14 @@
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper">
 
     <select id="findAllDataGroupInfoByUserId"
-            resultType="DataGroupFieldInfo">
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldRecord">
         select
             dg.map_id       map_id,
 
             dg.id           data_group_id,
             dg.name         data_group_name,
 
+            dgf.id          field_id,
             dgf.name        field_name,
             dt.type         field_type
         from data_group dg, data_group_field dgf, map m, data_type dt
@@ -19,12 +20,13 @@
     </select>
 
     <select id="findAllDataGroupInfoByGeoTableId"
-            resultType="DataGroupFieldInfo">
+            resultType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldRecord">
         select
             dg.map_id       map_id,
             dg.id           data_group_id,
             dg.name         data_group_name,
 
+            dgf.id          field_id,
             dgf.name        field_name,
             dt.type         field_type
         from data_group dg, data_group_field dgf, data_type dt, map m
@@ -33,55 +35,16 @@
         order by dgf.seq;
     </select>
 
-    <insert id="insertDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.DataGroupInsert"
+    <insert id="insertDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupInsert"
             useGeneratedKeys="true" keyProperty="dataGroupId">
         insert into data_group(name, map_id)
         values
             (#{groupName}, #{mapId});
     </insert>
 
-    <select id="findAllDataGroupStringField" resultType="DataGroupField">
-        select
-            dg.id           group_id,
-            dg.name         group_name,
-
-            dgf.id          column_id,
-            dgf.name        column_name,
-            dgf.seq         column_seq,
-
-            sr.id           row_id,
-            sr.latitude     latitude,
-            sr.longitude    longitude,
-
-            ssf.data        data,
-
-            dt.type         data_type
-        from data_group dg, spatial_record sr, data_group_field dgf,
-             spatial_string_field ssf, data_type dt
-        where dg.id = sr.data_group_id and dg.id = dgf.data_group_id and
-              dgf.data_type_id = dt.id and dt.type = 'STRING' and
-              dgf.id = ssf.data_group_field_id and sr.id = ssf.spatial_record_id;
-    </select>
-    <select id="findAllDataGroupNumberField" resultType="DataGroupField">
-        select
-            dg.id           group_id,
-            dg.name         group_name,
-
-            dgf.id          column_id,
-            dgf.name        column_name,
-            dgf.seq         column_seq,
-
-            sr.id           row_id,
-            sr.latitude     latitude,
-            sr.longitude    longitude,
-
-            snf.data        data,
-
-            dt.type         data_type
-        from data_group dg, spatial_record sr, data_group_field dgf,
-             spatial_number_field snf, data_type dt
-        where dg.id = sr.data_group_id and dg.id = dgf.data_group_id and
-              dgf.data_type_id = dt.id and dt.type = 'NUMBER' and
-              dgf.id = snf.data_group_field_id and sr.id = snf.spatial_record_id;
-    </select>
+    <update id="updateDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupUpdate">
+        update data_group
+        set name = #{dataGroupName}
+        where id = #{dataGroupId}
+    </update>
 </mapper>

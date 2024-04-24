@@ -1,15 +1,15 @@
-package site.jaedoo.mygeorecord.mybatis.dto;
+package site.jaedoo.mygeorecord.mybatis.dto.user;
 
 import lombok.Data;
 import site.jaedoo.mygeorecord.domain.entity.User;
 
 @Data
-public class UserInfo {
+public class UserRecord {
     private Long id;
     private String email;
     private String password;
 
-    public UserInfo(String email, String password) {
+    public UserRecord(String email, String password) {
         this.email = email;
         this.password = password;
     }

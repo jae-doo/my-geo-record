@@ -4,10 +4,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupFieldInfo;
 import site.jaedoo.mygeorecord.domain.entity.Column;
+import site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldInsert;
 import site.jaedoo.mygeorecord.web.controller.geotable.dto.DataGroupFieldForm;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,14 +22,18 @@ class DataGroupFieldMapperTest {
     @DisplayName("DataGroupField 삽입 로직 테스트")
     void insertDataGroupField() {
         // given
-        List<Column> columnList = List.of(
+        Long dataGroupId = 1L;
+        List<DataGroupFieldInsert> fieldInsertList = Stream.of(
                 new DataGroupFieldForm("field1", "STRING"),
                 new DataGroupFieldForm("field2", "STRING"),
                 new DataGroupFieldForm("field3", "NUMBER")
-        ).stream().map(DataGroupFieldForm::toColumn).toList();
+        )
+                .map(DataGroupFieldForm::toColumn)
+                .map(c -> new DataGroupFieldInsert(dataGroupId, c))
+                .toList();
 
         // when
-        int modified = dataGroupFieldMapper.insertDataGroupField(1L, columnList);
+        int modified = dataGroupFieldMapper.batchInsertDataGroupField(1L, fieldInsertList);
 
         // then
         assertThat(modified).isGreaterThan(0);

@@ -1,16 +1,16 @@
-package site.jaedoo.mygeorecord.mybatis.dto;
+package site.jaedoo.mygeorecord.mybatis.dto.geotable;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GeoTableInfo {
+public class GeoTableRecord {
     private Long id;
     private Long userId;
     private String name;
 
-    public GeoTableInfo(Long userId, String name) {
+    public GeoTableRecord(Long userId, String name) {
         this.userId = userId;
         this.name = name;
     }

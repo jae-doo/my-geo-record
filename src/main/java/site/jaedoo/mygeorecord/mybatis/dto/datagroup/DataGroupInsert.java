@@ -1,8 +1,9 @@
-package site.jaedoo.mygeorecord.mybatis.dto;
+package site.jaedoo.mygeorecord.mybatis.dto.datagroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.jaedoo.mygeorecord.domain.dto.DataGroupCreation;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +14,8 @@ public class DataGroupInsert {
     private Long mapId;
     private String groupName;
 
-    public DataGroupInsert(Long mapId, String groupName) {
-        this.mapId = mapId;
-        this.groupName = groupName;
+    public DataGroupInsert(DataGroupCreation info) {
+        this.mapId = info.mapId();
+        this.groupName = info.dataGroupName();
     }
 }

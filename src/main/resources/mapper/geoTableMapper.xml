@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.jaedoo.mygeorecord.mybatis.mapper.GeoTableMapper">
-
-    <!--  모든 GeoTable을 조회합니다.  -->
-    <select id="findAllGeoTable" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
-        select id, name, owner
-        from MAP;
-    </select>
-
     <!--  사용자가 소유한 GeoTable을 조회합니다.  -->
     <select id="findGeoTableByUserId" resultType="site.jaedoo.mygeorecord.domain.entity.GeoTable">
         select id, name, owner
@@ -36,7 +29,7 @@
     </select>
 
     <!--  GeoTable을 추가합니다.  -->
-    <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.GeoTableInfo"
+    <insert id="insertGeoTable" parameterType="site.jaedoo.mygeorecord.mybatis.dto.geotable.GeoTableRecord"
             useGeneratedKeys="true" keyProperty="id">
         insert into MAP(name, owner)
         values (#{name}, #{userId});
