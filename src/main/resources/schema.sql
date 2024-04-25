@@ -19,6 +19,7 @@ create table map (
                      id long primary key auto_increment,
                      name varchar(255) not null,
                      owner long not null references users(id)
+                         on update cascade on delete cascade
 );
 
 -- 데이터 그룹 테이블
@@ -26,6 +27,7 @@ create table data_group (
                             id long primary key auto_increment,
                             name varchar(255) not null,
                             map_id long not null references map(id)
+                                on update cascade on delete cascade
 );
 
 -- 데이터 타입 테이블
@@ -39,7 +41,8 @@ create table data_group_field (
                                   id long primary key auto_increment,
                                   name varchar(255) not null,
                                   seq int not null,
-                                  data_group_id long not null references data_group(id),
+                                  data_group_id long not null references data_group(id)
+                                      on update cascade on delete cascade,
                                   data_type_id long not null references data_type(id)
 );
 
@@ -54,7 +57,8 @@ create table spatial_record (
                                 id long primary key auto_increment,
                                 latitude double not null,
                                 longitude double not null,
-                                data_group_id long not null references data_group(id),
+                                data_group_id long not null references data_group(id)
+                                    on update cascade on delete cascade,
                                 record_type_id long not null references record_type(id)
 );
 
@@ -62,8 +66,10 @@ create table spatial_record (
 create table spatial_string_field (
                                id long primary key auto_increment,
                                data varchar(255) not null,
-                               spatial_record_id long not null references spatial_record(id),
-                               data_group_field_id long not null references data_group_field(id),
+                               spatial_record_id long not null references spatial_record(id)
+                                   on update cascade on delete cascade,
+                               data_group_field_id long not null references data_group_field(id)
+                                   on update cascade on delete cascade,
                                data_type_id long not null references data_type(id)
 );
 

@@ -13,4 +13,5 @@ public interface DataGroupMapper {
     List<DataGroupFieldRecord> findAllDataGroupInfoByGeoTableId(Long mapId);
     int insertDataGroup(DataGroupInsert dataGroupInsert);
     int updateDataGroup(DataGroupUpdate dataGroupUpdate);
+    int deleteDataGroup(Long dataGroupId);
 }

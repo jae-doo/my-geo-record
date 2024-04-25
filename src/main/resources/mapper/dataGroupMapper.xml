@@ -45,6 +45,11 @@
     <update id="updateDataGroup" parameterType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupUpdate">
         update data_group
         set name = #{dataGroupName}
-        where id = #{dataGroupId}
+        where id = #{dataGroupId};
     </update>
+
+    <delete id="deleteDataGroup">
+        delete from data_group
+        where id = #{dataGroupId};
+    </delete>
 </mapper>

@@ -9,21 +9,27 @@
         </foreach>
     </insert>
 
-    <insert id="insertDataGroupField" useGeneratedKeys="true" keyColumn="dataGroupFieldId">
+    <insert id="insertDataGroupField" useGeneratedKeys="true" keyProperty="dataGroupFieldId"
+            parameterType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldInsert">
         insert into data_group_field(name, seq, data_group_id, data_type_id)
         values
-            (#{fieldInfo.fieldName},
+            (#{fieldName},
              (select count(id) + 1 from data_group_field where data_group_id = #{dataGroupId}),
              #{dataGroupId},
-             (select id from data_type where type=#{fieldInfo.fieldType}))
+             (select id from data_type where type=#{fieldType}))
     </insert>
 
-    <update id="updateDataGroupField">
+    <update id="updateDataGroupField" parameterType="site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldUpdate">
         update data_group_field
-        set name    = ${dataGroupFieldName},
+        set name    = '${dataGroupFieldName}',
             seq     = ${order},
-            data_type_id = (select id from data_type where type = ${dataGroupFieldType})
+            data_type_id = (select id from data_type where type = '${dataGroupFieldType}')
         where
-            id = ${dataGroupFieldId}
+            id = ${dataGroupFieldId};
     </update>
+
+    <delete id="deleteDataGroupField">
+        delete from data_group_field
+        where id = ${dataGroupFieldId};
+    </delete>
 </mapper>

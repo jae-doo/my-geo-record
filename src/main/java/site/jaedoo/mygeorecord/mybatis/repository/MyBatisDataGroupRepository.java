@@ -6,10 +6,7 @@ import org.springframework.stereotype.Repository;
 import site.jaedoo.mygeorecord.domain.dto.*;
 import site.jaedoo.mygeorecord.domain.entity.DataType;
 import site.jaedoo.mygeorecord.domain.repository.DataGroupRepository;
-import site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldRecord;
-import site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupFieldInsert;
-import site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupInsert;
-import site.jaedoo.mygeorecord.mybatis.dto.datagroup.DataGroupUpdate;
+import site.jaedoo.mygeorecord.mybatis.dto.datagroup.*;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupFieldMapper;
 import site.jaedoo.mygeorecord.mybatis.mapper.DataGroupMapper;
 
@@ -63,13 +60,23 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
     }
 
     @Override
+    public int deleteDataGroup(Long dataGroupId) {
+        return dataGroupMapper.deleteDataGroup(dataGroupId);
+    }
+
+    @Override
     public int insertDataGroupField(DataGroupFieldCreation info) {
         return fieldMapper.insertDataGroupField(new DataGroupFieldInsert(info));
     }
 
     @Override
     public int updateDataGroupField(DataGroupFieldEdit info) {
-        return 0;
+        return fieldMapper.updateDataGroupField(new DataGroupFieldUpdate(info));
+    }
+
+    @Override
+    public int deleteDataGroupField(Long dataGroupFieldId) {
+        return fieldMapper.deleteDataGroupField(dataGroupFieldId);
     }
 
     private static class DataGroupInfoCollector implements Collector<DataGroupFieldRecord, Map<Long, DataGroupInfoCollector.DataGroupStore>, List<DataGroupInfo>> {
@@ -78,10 +85,9 @@ public class MyBatisDataGroupRepository implements DataGroupRepository {
         }
 
         public BiConsumer<Map<Long, DataGroupStore>, DataGroupFieldRecord> accumulator() {
-            return (map, dataGroupFieldInfo) -> {
+            return (map, dataGroupFieldInfo) ->
                 map.computeIfAbsent(dataGroupFieldInfo.getDataGroupId(), (key) -> new DataGroupStore(dataGroupFieldInfo))
                         .addColumn(dataGroupFieldInfo);
-            };
         }
 
         @Override

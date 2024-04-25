@@ -9,6 +9,8 @@ public interface DataGroupRepository {
     List<DataGroupInfo> findAllGeoTableDataGroupInfo(Long userId, Long geoTableId);
     int insertDataGroup(DataGroupCreation info);
     int updateDataGroup(DataGroupEdit info);
+    int deleteDataGroup(Long dataGroupId);
     int insertDataGroupField(DataGroupFieldCreation info);
     int updateDataGroupField(DataGroupFieldEdit info);
+    int deleteDataGroupField(Long dataGroupFieldId);
 }
